@@ -1,9 +1,14 @@
 [versions]
+kotlin = "1.9.22"
+compose = "1.6.0"
 jewel = "0.18.0"
+serialization = "1.6.3"
 
 [libraries]
-
 jewel = { group = "org.jetbrains.jewel", name = "jewel-int-ui-standalone-241", version.ref = "jewel" }
 jewel-window = { group = "org.jetbrains.jewel", name = "jewel-int-ui-decorated-window-241", version.ref = "jewel" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 [plugins]
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
