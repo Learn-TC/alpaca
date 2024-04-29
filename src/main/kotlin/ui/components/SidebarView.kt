@@ -26,9 +26,6 @@ fun SidebarView(
     onNewChat: () -> Unit,
 ) {
     val width by animateDpAsState(targetValue = if (expanded) 190.dp else 48.dp)
-    val alignment: Alignment.Horizontal = if (expanded) Alignment.Start else Alignment.CenterHorizontally
-    val padding = if (expanded) PaddingValues(horizontal = 4.dp, vertical = 12.dp) else PaddingValues(vertical = 12.dp)
-
     val backgroundColor = Color(0xFF181616) //TODO
     val borderColor = Color(0xff2A2A27) //TODO
     val primary = Color(0xffBFBA9D) //TODO
@@ -41,13 +38,15 @@ fun SidebarView(
             .drawBehind {
                 drawLine(borderColor, start = Offset(size.width, 0f), end = Offset(size.width, size.height))
             }
-            .padding(padding),
-        horizontalAlignment = alignment,
+            .padding(horizontal = 4.dp, vertical = 12.dp),
     ) {
         val addPainter = svgResource("/icons/plus.svg")
 
-        IconButton(modifier = Modifier, onClick = onNewChat) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(modifier = Modifier.fillMaxWidth(), onClick = onNewChat) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Icon(
                     modifier = Modifier.padding(vertical = 8.dp, horizontal = 12.dp),
                     painter = addPainter,
@@ -56,7 +55,7 @@ fun SidebarView(
 
                 if (expanded) {
                     Text(
-                        modifier = Modifier.padding(vertical = 8.dp).padding(end = 12.dp),
+                        modifier = Modifier.padding(vertical = 8.dp).padding(end = 12.dp).weight(1f),
                         text = "New chat",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
