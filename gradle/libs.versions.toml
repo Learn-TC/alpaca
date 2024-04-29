@@ -1,0 +1,9 @@
+[versions]
+jewel = "0.18.0"
+
+[libraries]
+
+jewel = { group = "org.jetbrains.jewel", name = "jewel-int-ui-standalone-241", version.ref = "jewel" }
+jewel-window = { group = "org.jetbrains.jewel", name = "jewel-int-ui-decorated-window-241", version.ref = "jewel" }
+
+[plugins]
