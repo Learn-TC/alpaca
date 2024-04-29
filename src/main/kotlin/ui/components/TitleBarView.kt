@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import model.Model
 import org.jetbrains.jewel.foundation.theme.JewelTheme
 import org.jetbrains.jewel.intui.standalone.styling.dark
@@ -27,14 +28,13 @@ sealed interface TitleBarEvent {
     data object ToggleSidebar : TitleBarEvent
     data object OnNotification : TitleBarEvent
     data object OnSettings : TitleBarEvent
-    data object OnOpenModelDialog : TitleBarEvent
     data class OnModelSelected(val model: Model) : TitleBarEvent
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DecoratedWindowScope.TitleBarView(
-    selectedModel: Model,
+    selectedModel: Model?,
     models: List<Model>,
     sidebarExpanded: Boolean,
     onEvent: (event: TitleBarEvent) -> Unit,
@@ -68,7 +68,7 @@ fun DecoratedWindowScope.TitleBarView(
                 modifier = Modifier.padding(start = dropdownStartPadding),
                 selectedModel = selectedModel,
                 models = models,
-                onModelClick = { model -> TitleBarEvent.OnModelSelected(model) },
+                onModelClick = { model -> onEvent(TitleBarEvent.OnModelSelected(model)) },
             )
         }
 
@@ -105,7 +105,7 @@ fun DecoratedWindowScope.TitleBarView(
 private fun ModelDropdown(
     modifier: Modifier = Modifier,
     menuModifier: Modifier = Modifier,
-    selectedModel: Model,
+    selectedModel: Model?,
     models: List<Model>,
     onModelClick: (Model) -> Unit,
 ) {
@@ -138,23 +138,25 @@ private fun ModelDropdown(
         menuModifier = menuModifier then Modifier.width(360.dp),
         style = customStyle,
         menuContent = {
-            passiveItem {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(modifier = Modifier.weight(1f), text = "NAME", color = groupTitleColor)
-                    Text(
-                        modifier = Modifier.width(108.dp).padding(horizontal = 8.dp),
-                        text = "ID",
-                        color = groupTitleColor,
-                    )
-                    Text(
-                        modifier = Modifier.widthIn(min = 54.dp),
-                        text = "SIZE",
-                        textAlign = TextAlign.Start,
-                        color = groupTitleColor
-                    )
+            if (models.isNotEmpty()) {
+                passiveItem {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(modifier = Modifier.weight(1f), text = "NAME", color = groupTitleColor)
+                        Text(
+                            modifier = Modifier.width(108.dp).padding(horizontal = 8.dp),
+                            text = "ID",
+                            color = groupTitleColor,
+                        )
+                        Text(
+                            modifier = Modifier.widthIn(min = 54.dp),
+                            text = "SIZE",
+                            textAlign = TextAlign.Start,
+                            color = groupTitleColor
+                        )
+                    }
                 }
             }
 
@@ -175,7 +177,7 @@ private fun ModelDropdown(
                 }
             }
 
-            separator()
+            if (models.isNotEmpty()) separator()
 
             passiveItem {
                 var text by remember { mutableStateOf("") }
@@ -207,7 +209,12 @@ private fun ModelDropdown(
         },
     ) {
         Row(modifier = Modifier.widthIn(max = 180.dp)) {
-            Text(text = selectedModel.name, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                text = selectedModel?.name ?: "select a model",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 14.sp
+            )
         }
     }
 }
