@@ -3,7 +3,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 plugins {
     kotlin("jvm") version(libs.versions.kotlin)
     alias(libs.plugins.compose)
-    alias(libs.plugins.serialization) apply false
+    alias(libs.plugins.serialization)
 }
 
 group = "com.github.learn-tc"
@@ -24,8 +24,15 @@ dependencies {
         exclude(group = "org.jetbrains.compose.material")
     }
 
-    // Serialization
-    implementation(libs.kotlinx.serialization)
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.swing)
+
+    // HTTP Client
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.cio)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.serialization)
 }
 
 compose.desktop {

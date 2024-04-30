@@ -3,12 +3,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import model.Model
+import kotlinx.coroutines.launch
+import ollama.models.Model
 import ui.components.TitleBarEvent
+import utils.ViewModel
 
 class MainViewModel(
     private val modelRepository: ModelRepository,
-) {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
@@ -26,8 +28,10 @@ class MainViewModel(
     }
 
     private fun fetchPulledModels() {
-        val models = modelRepository.getPulledModels()
-        _uiState.update { it.copy(models = models) }
+        viewModelScope.launch {
+            val models = modelRepository.getPulledModels()
+            _uiState.update { it.copy(models = models) }
+        }
     }
 
     private fun toggleSidebarState() {
