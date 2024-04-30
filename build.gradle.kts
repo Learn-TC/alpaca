@@ -1,8 +1,9 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-    kotlin("jvm")
-    id("org.jetbrains.compose")
+    kotlin("jvm") version(libs.versions.kotlin)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.serialization)
 }
 
 group = "com.github.learn-tc"
@@ -16,12 +17,22 @@ repositories {
 }
 
 dependencies {
+    // Jetpack Compose
+    implementation(libs.jewel)
+    implementation(libs.jewel.window)
     implementation(compose.desktop.currentOs) {
         exclude(group = "org.jetbrains.compose.material")
     }
 
-    implementation(libs.jewel)
-    implementation(libs.jewel.window)
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.swing)
+
+    // HTTP Client
+    implementation(libs.ktor.core)
+    implementation(libs.ktor.cio)
+    implementation(libs.ktor.content.negotiation)
+    implementation(libs.ktor.serialization)
 }
 
 compose.desktop {

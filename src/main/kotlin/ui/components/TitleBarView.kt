@@ -11,7 +11,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import model.Model
+import ollama.models.Model
 import org.jetbrains.jewel.foundation.theme.JewelTheme
 import org.jetbrains.jewel.intui.standalone.styling.dark
 import org.jetbrains.jewel.ui.component.*
@@ -54,7 +54,7 @@ fun DecoratedWindowScope.TitleBarView(
             ) {
                 Icon(
                     painter = menuPainter,
-                    contentDescription = "menu icon"
+                    contentDescription = "menu icon",
                 )
             }
 
@@ -173,7 +173,11 @@ private fun ModelDropdown(
                         overflow = TextOverflow.Ellipsis,
                     )
                     Text(modifier = Modifier.width(108.dp).padding(horizontal = 8.dp), text = model.id)
-                    Text(modifier = Modifier.widthIn(min = 54.dp), text = "5.0 GB", textAlign = TextAlign.Start)
+                    Text(
+                        modifier = Modifier.widthIn(min = 62.dp),
+                        text = model.formattedSize,
+                        textAlign = TextAlign.End,
+                    )
                 }
             }
 

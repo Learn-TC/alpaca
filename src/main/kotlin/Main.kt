@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.application
-import domain.MockedModelRepository
+import domain.ModelRepositoryImpl
 import org.jetbrains.jewel.window.DecoratedWindow
 import ui.components.SidebarView
 import ui.components.TitleBarView
@@ -16,8 +16,8 @@ import ui.theme.AlpacaTheme
 
 fun main() = application {
     AlpacaTheme {
-        val mockedRepository = MockedModelRepository()
-        val viewModel = MainViewModel(mockedRepository)
+        val modelRepo = ModelRepositoryImpl()
+        val viewModel = MainViewModel(modelRepo)
         val uiState by viewModel.uiState.collectAsState()
 
         DecoratedWindow(onCloseRequest = ::exitApplication) {

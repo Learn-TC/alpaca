@@ -1,17 +1,18 @@
 package domain
 
-import model.Model
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ollama.Ollama
+import ollama.models.Model
 
 interface ModelRepository {
-    fun getPulledModels(): List<Model>
+    suspend fun getPulledModels(): List<Model>
 }
 
-//TODO: delete this after proper implementation
-class MockedModelRepository: ModelRepository {
-    private val models = listOf(
-        Model(name = "codegemma:7b", digest = "1872317263187326ca966f70c13f"),
-        Model(name = "llama3:8b", digest = "2938ynr2983e71a106a91016")
-    )
+class ModelRepositoryImpl: ModelRepository {
+    private val ollama = Ollama()
 
-    override fun getPulledModels(): List<Model> = models
+    override suspend fun getPulledModels(): List<Model> = withContext(Dispatchers.IO) {
+        return@withContext ollama.listModels().models
+    }
 }
