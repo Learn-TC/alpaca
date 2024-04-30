@@ -28,6 +28,7 @@ sealed interface TitleBarEvent {
     data object ToggleSidebar : TitleBarEvent
     data object OnNotification : TitleBarEvent
     data object OnSettings : TitleBarEvent
+    data object OnModelDropdown: TitleBarEvent
     data class OnModelSelected(val model: Model) : TitleBarEvent
 }
 
@@ -68,6 +69,7 @@ fun DecoratedWindowScope.TitleBarView(
                 modifier = Modifier.padding(start = dropdownStartPadding),
                 selectedModel = selectedModel,
                 models = models,
+                onClick = { onEvent(TitleBarEvent.OnModelDropdown) },
                 onModelClick = { model -> onEvent(TitleBarEvent.OnModelSelected(model)) },
             )
         }
@@ -107,6 +109,7 @@ private fun ModelDropdown(
     menuModifier: Modifier = Modifier,
     selectedModel: Model?,
     models: List<Model>,
+    onClick: () -> Unit,
     onModelClick: (Model) -> Unit,
 ) {
     // TODO: move colors
@@ -133,9 +136,10 @@ private fun ModelDropdown(
         ),
     )
 
-    Dropdown(
+    MyDropdown(
         modifier = modifier,
         menuModifier = menuModifier then Modifier.width(360.dp),
+        onClick = onClick,
         style = customStyle,
         menuContent = {
             if (models.isNotEmpty()) {

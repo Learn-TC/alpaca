@@ -14,20 +14,17 @@ class MainViewModel(
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    init {
-        fetchPulledModels()
-    }
-
     fun handleTitleBarEvents(event: TitleBarEvent) {
         when (event) {
             TitleBarEvent.ToggleSidebar -> toggleSidebarState()
             TitleBarEvent.OnNotification -> { /*TODO*/ }
             TitleBarEvent.OnSettings -> { /*TODO*/ }
             is TitleBarEvent.OnModelSelected -> updateSelectedModel(event.model)
+            TitleBarEvent.OnModelDropdown -> { fetchPulledModels() }
         }
     }
 
-    private fun fetchPulledModels() {
+    fun fetchPulledModels() {
         viewModelScope.launch {
             val models = modelRepository.getPulledModels()
             _uiState.update { it.copy(models = models) }
